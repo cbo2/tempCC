@@ -17,7 +17,7 @@
   },
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server/app.js"
   },
   "license": "Apache-2.0"
 }
