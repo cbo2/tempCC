@@ -1,0 +1,66 @@
+/* Adds background image */
+body {
+    background: #000000 url("../images/country-quilt-dark.png") repeat right top;
+}
+
+/* White text color for all text not in a modal */
+div {
+    color: #ffffff;
+}
+
+/* Force hr to be white */
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0; 
+}
+
+/* Black text color for all text in a modal */
+.modal-text-color {
+    color: #000000;
+}
+
+/* Forcing "Begin Survey" button down to be horizontally aligned */
+#modalIntializeButton {
+    margin-top: 250px;
+}
+
+/* Settings for all four rating buttons */
+.ratingButtons {
+    height: 80px;
+    width: 70px;
+    margin: 5px 1px 5px 0px;
+}
+
+/* Set width of movie posters */
+#movie-poster {
+    width: 350px
+}
+
+/* Rating Button 1 Background Image */
+#ratingButton1 {
+    background-image: url("..//images/fist5-1.png");
+}
+
+/* Rating Button 2 Background Image */
+#ratingButton2 {
+    background-image: url("..//images/fist5-2.png");
+}
+
+/* Rating Button 3 Background Image */
+#ratingButton3 {
+    background-image: url("..//images/fist5-3.png");
+}
+
+/* Rating Button 4 Background Image */
+#ratingButton4 {
+    background-image: url("..//images/fist5-4.png");
+}
+
+/* Rating Button 5 Background Image */
+#ratingButton5 {
+    background-image: url("..//images/fist5-5.png");
+}

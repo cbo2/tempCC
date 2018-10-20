@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Group Project Kiosk by Don, Josh, and Craig (DJC)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Adds link to Bootstrap & style.css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+
+    <!-- Adds link to JQuery & app.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
+    <script src = "/path/to/clientside-require.js"></script>
+    <script>
+        var multer  = load('multer')
+    </script>
+
+    <script src="https://unpkg.com/blob-util/dist/blob-util.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
+
+    <!-- Adds favicon -->
+    <link rel="icon" href="assets/images/movieReelFavicon.png" type="image/gif" sizes="16x16">
+</head>
+
+<body>
+    <!-- Bootsrap Grid format to store movie data and rating buttons -->
+    <div class="container.fluid">
+        <div class="row no-gutters">
+            <div class="col-md-8">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-md-6">
+                        <div class="row no-gutters align-items-center justify-content-center" id="movie-posters">
+                        </div>
+                        <div class="row no-gutters align-items-center justify-content-center" id="movie-rating">
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="movie-info">
+                    </div>
+                </div>
+                <div class="row no-gutters align-items-center justify-content-center" id="end-div">
+                </div>
+                <div class="row no-gutters align-items-center justify-content-center" id="end-button-div">
+                </div>
+            </div>
+            <div class="col-md-4" id="rating-history" style="display: none">
+                <h3>Rating History:</h3>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- Begin Survey Button trigger modal -->
+    <div class="row justify-content-center">
+        <button type="button" class="btn-lg btn-primary" id="modalIntializeButton" data-toggle="modal" data-target="#startSurveyModal">
+            Begin Survey
+        </button>
+    </div>
+
+    <!-- Begin Survey Modal -->
+    <div class="modal fade" id="startSurveyModal" tabindex="-1" role="dialog" aria-labelledby="startSurveyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title modal-text-color" id="startSurveyModalLabel">Tap the picture of your food item!</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to collect zipcode and photo -->
+                    <form>
+                        <br>
+                        <!-- HTML for live videa camera stream -->
+                        <h6 class="modal-text-color">Tap the video stream to snap your picture!</h6>
+                        <div>
+                            <video id="screenshot-video" class="videostream img-fluid" autoplay="true" preload="auto" muted="true" playsinline="true"></video>
+                            <img id="screenshot-img" src="">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

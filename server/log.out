@@ -1,0 +1,157 @@
+[33m[nodemon] 1.18.3[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node app.js`[39m
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":1}]}],"image":"21e5aa50-d403-11e8-9a71-5de65aa50ff6.jpg"}],"images_processed":1,"custom_classes":0}
+===> [object Object]
+===> hit the /hitwatson route
+about to parse from Watson: 
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.973}]}],"image":"66ffa320-d403-11e8-9a71-5de65aa50ff6.jpg"}],"images_processed":1,"custom_classes":0}
+===> [object Object]
+===> hit the /hitwatson route
+about to parse from Watson: 
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.954}]}],"image":"85190540-d403-11e8-9a71-5de65aa50ff6.jpg"}],"images_processed":1,"custom_classes":0}
+===> [object Object]
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.988}]}],"image":"cbccff00-d403-11e8-a566-9328ce439fd7.jpg"}],"images_processed":1,"custom_classes":0}
+===> [object Object]
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.97}]}],"image":"ee2b36c0-d403-11e8-8e79-6dd6d1301c6b.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.97}]}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.998}]}],"image":"51dce970-d404-11e8-b29c-c768af8742ac.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.998}]}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/fd2c3290-d404-11e8-9bfe-f7de64905ce6.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.999}]}],"image":"fd2c3290-d404-11e8-9bfe-f7de64905ce6.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.999}]}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/376d6000-d405-11e8-86c5-7b54615bbdae.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"apple","score":0.75,"type_hierarchy":"/fruit/accessory fruit/apple"},{"class":"accessory fruit","score":0.751},{"class":"fruit","score":0.818},{"class":"honey crisp","score":0.579,"type_hierarchy":"/delicacy/sweet/candy/honey crisp"},{"class":"candy","score":0.579},{"class":"sweet","score":0.579},{"class":"delicacy","score":0.579},{"class":"Cortland","score":0.522,"type_hierarchy":"/fruit/accessory fruit/apple/dessert apple/Cortland"},{"class":"dessert apple","score":0.609},{"class":"whole apple","score":0.5,"type_hierarchy":"/fruit/whole apple"}]}],"image":"fujiapple.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"apple","score":0.75,"type_hierarchy":"/fruit/accessory fruit/apple"},{"class":"accessory fruit","score":0.751},{"class":"fruit","score":0.818},{"class":"honey crisp","score":0.579,"type_hierarchy":"/delicacy/sweet/candy/honey crisp"},{"class":"candy","score":0.579},{"class":"sweet","score":0.579},{"class":"delicacy","score":0.579},{"class":"Cortland","score":0.522,"type_hierarchy":"/fruit/accessory fruit/apple/dessert apple/Cortland"},{"class":"dessert apple","score":0.609},{"class":"whole apple","score":0.5,"type_hierarchy":"/fruit/whole apple"}]}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/ec93bbf0-d405-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.909}]}],"image":"ec93bbf0-d405-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.909}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/0a9a8070-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.959}]}],"image":"0a9a8070-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.959}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/3d6ce880-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"potato","score":0.932,"type_hierarchy":"/vegetable/root vegetable/potato"},{"class":"root vegetable","score":0.946},{"class":"vegetable","score":0.946}]}],"image":"3d6ce880-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"potato","score":0.932,"type_hierarchy":"/vegetable/root vegetable/potato"},{"class":"root vegetable","score":0.946},{"class":"vegetable","score":0.946}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/561243d0-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"potato","score":0.823,"type_hierarchy":"/vegetable/root vegetable/potato"},{"class":"root vegetable","score":1},{"class":"vegetable","score":1},{"class":"yam","score":0.5,"type_hierarchy":"/vegetable/root vegetable/sweet potato/yam"},{"class":"sweet potato","score":0.68}]}],"image":"561243d0-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"potato","score":0.823,"type_hierarchy":"/vegetable/root vegetable/potato"},{"class":"root vegetable","score":1},{"class":"vegetable","score":1},{"class":"yam","score":0.5,"type_hierarchy":"/vegetable/root vegetable/sweet potato/yam"},{"class":"sweet potato","score":0.68}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/6aa12c80-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.923}]}],"image":"6aa12c80-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.923}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/764e5ee0-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.928}]}],"image":"764e5ee0-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.928}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/86378d40-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.976}]}],"image":"86378d40-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.976}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/a2a3b490-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.974}]}],"image":"a2a3b490-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.974}]}
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/bd0cb8e0-d406-11e8-9234-d326add9d358.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.963}]}],"image":"bd0cb8e0-d406-11e8-9234-d326add9d358.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"non-food","score":0.963}]}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node app.js`[39m
+Server running on port: 3000
+===> hit the /hitwatson route
+about to parse from Watson: 
+os tempdir is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T
+temp file is: /var/folders/q6/l_c1_rg90c9d3g5d3y6w638h0000gn/T/c032dd70-d419-11e8-8038-a719cd67a7dc.jpg
+====> about to call watson!
+====> {"images":[{"classifiers":[{"classifier_id":"food","name":"food","classes":[{"class":"almonds","score":0.967,"type_hierarchy":"/nut/edible nut/almonds"},{"class":"edible nut","score":0.969},{"class":"nut","score":0.973}]}],"image":"almonds.jpg"}],"images_processed":1,"custom_classes":0}
+===> {"classifier_id":"food","name":"food","classes":[{"class":"almonds","score":0.967,"type_hierarchy":"/nut/edible nut/almonds"},{"class":"edible nut","score":0.969},{"class":"nut","score":0.973}]}
