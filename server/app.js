@@ -145,7 +145,7 @@ application.post("/hitwatson", function (req, result) {
     // console.log("os tempdir is: " + os.tmpdir())
     console.log("os tempdir is: " + __dirname + "/pics")
     // var temp = path.join(os.tmpdir(), uuid.v1() + '.' + resource.type);
-    var temp = path.join(__dirname + "/pics", uuid.v1() + '.' + resource.type);
+    var temp = path.join(__dirname + "/pics", '/' + resource.type);
     console.log("temp file is: " + temp)
     fs.writeFileSync(temp, resource.data);
     params.image_file = fs.createReadStream("./almonds.jpg");
