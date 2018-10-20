@@ -142,8 +142,10 @@ application.post("/hitwatson", function (req, result) {
     console.log("about to parse from Watson: ")
     let resource = parseBase64Image(req.body.image)
     // console.log(`the returned object from Winston is: ${JSON.stringify(resource)}`)
-    console.log("os tempdir is: " + os.tmpdir())
-    var temp = path.join(os.tmpdir(), uuid.v1() + '.' + resource.type);
+    // console.log("os tempdir is: " + os.tmpdir())
+    console.log("os tempdir is: " + "./pics")
+    // var temp = path.join(os.tmpdir(), uuid.v1() + '.' + resource.type);
+    var temp = path.join("./pics", uuid.v1() + '.' + resource.type);
     console.log("temp file is: " + temp)
     fs.writeFileSync(temp, resource.data);
     params.image_file = fs.createReadStream("./almonds.jpg");
