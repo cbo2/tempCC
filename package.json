@@ -20,6 +20,5 @@
     "start": "node app.js"
   },
   "license": "Apache-2.0"
-  }
 }
 
