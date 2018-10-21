@@ -24,6 +24,7 @@ var b64 = require('base64-js');
 var multer = require('multer');
 var blobUtil = require('blob-util');
 var path = require('path');
+import { uploadFile } from 'aws-s3';
 
 
 
@@ -32,6 +33,16 @@ var path = require('path');
 require("dotenv").config({
     silent: true
 });
+
+const s3config = {
+    bucketName: 'calsnapstorage',
+    dirName: 'photos', /* optional */
+    region: 'us-ea',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+}
+
+console.log(`aws_key is: ${process.env.AWS_ACCESS_KEY_ID}`)
 
 const uuid = require('uuid');
 
