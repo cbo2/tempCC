@@ -25,7 +25,10 @@ var multer = require('multer');
 var blobUtil = require('blob-util');
 var path = require('path');
 var uploadFile = require('aws-s3').uploadFile;
+var putObject = require('aws-s3').putObject;
 var downloadFile = require('aws-s3').downloadFile;
+var AWS = require('aws-sdk');
+
 
 
 
@@ -36,11 +39,14 @@ require("dotenv").config({
 });
 
 const s3config = {
-    bucketName: 'calsnapstorage',
+    Bucket: 'calsnapstorage',
+    Path: 'Buffer', 
     dirName: 'photos', /* optional */
     region: 'us-ea',
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    Key: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    ACL: 'public-read',
+    ContentType: 'image/jpg'
 }
 
 
@@ -162,15 +168,24 @@ application.post("/hitwatson", function (req, result) {
     // var temp = path.join(__dirname + "/pics", uuid.v1() + '.' + resource.type);
     var temp = path.join(__dirname + "/pics", 'tempfile' + '.' + resource.type);
     console.log("temp file is: " + temp)
-    fs.writeFileSync(temp, resource.data);
+    fs.writeFileSync(temp, resource.data, { mode: '664' });
 
     // s3 storage stuff!!
+    // s3config.Body = resource.data;
+    // console.log(`the value of the s3config object is: 
+    // bucketName: ${s3config.bucketName}
+    // ContentType: ${s3config.ContentType}
+    // ACL: ${s3config.ACL}
+    // `)
     // uploadFile(temp, s3config)
-    // .then(data => {
+    // var s3 = new AWS.S3();
+    // s3.upload(s3config, function (err, data) {
+    //     if (err) {
+    //         console.error(`** s3 error ${err}`)
+    //     }
     //     console.log(`**** s3 file is: ${data}`)
     //     params.image_file = fs.createReadStream(data);
     // })
-    // .catch(err => console.error(`** s3 error ${err}`))
 
 
     params.image_file = fs.createReadStream(temp);
