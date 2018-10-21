@@ -25,6 +25,7 @@ var multer = require('multer');
 var blobUtil = require('blob-util');
 var path = require('path');
 var uploadFile = require('aws-s3').uploadFile;
+var downloadFile = require('aws-s3').downloadFile;
 
 
 
@@ -42,7 +43,6 @@ const s3config = {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 }
 
-console.log(`aws_key is: ${process.env.AWS_ACCESS_KEY_ID}`)
 
 const uuid = require('uuid');
 
@@ -155,11 +155,25 @@ application.post("/hitwatson", function (req, result) {
     // console.log(`the returned object from Winston is: ${JSON.stringify(resource)}`)
     // console.log("os tempdir is: " + os.tmpdir())
     console.log("os tempdir is: " + __dirname + "/pics")
-    // var temp = path.join(os.tmpdir(), uuid.v1() + '.' + resource.type);
-    var temp = path.join(__dirname + "/pics", uuid.v1() + '.' + resource.type);
+
+    
+
+
+    // var temp = path.join(__dirname + "/pics", uuid.v1() + '.' + resource.type);
+    var temp = path.join(__dirname + "/pics", 'tempfile' + '.' + resource.type);
     console.log("temp file is: " + temp)
     fs.writeFileSync(temp, resource.data);
-    params.image_file = fs.createReadStream("./almonds.jpg");
+
+    // s3 storage stuff!!
+    // uploadFile(temp, s3config)
+    // .then(data => {
+    //     console.log(`**** s3 file is: ${data}`)
+    //     params.image_file = fs.createReadStream(data);
+    // })
+    // .catch(err => console.error(`** s3 error ${err}`))
+
+
+    params.image_file = fs.createReadStream(temp);
     // result.end()
 
     // const params = {
