@@ -27,7 +27,7 @@ var path = require('path');
 var uploadFile = require('aws-s3').uploadFile;
 var putObject = require('aws-s3').putObject;
 var downloadFile = require('aws-s3').downloadFile;
-var AWS = require('aws-sdk');
+// var AWS = require('aws-sdk');
 
 
 
