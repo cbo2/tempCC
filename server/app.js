@@ -24,7 +24,7 @@ var b64 = require('base64-js');
 var multer = require('multer');
 var blobUtil = require('blob-util');
 var path = require('path');
-import { uploadFile } from 'aws-s3';
+var uploadFile = require('aws-s3').uploadFile;
 
 
 
