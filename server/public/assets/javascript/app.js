@@ -117,9 +117,12 @@ $(document).ready(function () {
 
         console.log("about to make a POST requet to the backend");
 
+        $("#movie-info").empty();
         $.post('/hitwatson', { image: img })
             .then(function (res) {
                 console.log("==> the response: " + JSON.stringify(res));
+                $("#movie-info").append("This is what we got: ");
+                $("#movie-info").append(JSON.stringify(res));
             });
 
 

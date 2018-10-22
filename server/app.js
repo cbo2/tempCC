@@ -207,7 +207,7 @@ application.post("/hitwatson", function (req, result) {
             console.log(err);
         } else {
             console.log("====> " + JSON.stringify(res));
-            const labelsvr = JSON.parse(JSON.stringify(res)).images[0].classifiers[0];
+            const labelsvr = res.images[0].classifiers[0].classes[0].class;
             console.log("===> " + JSON.stringify(labelsvr));
             result.send({ data: labelsvr });
         }
