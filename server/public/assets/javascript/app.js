@@ -283,6 +283,15 @@ $(document).ready(function () {
             }
         }
         navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {  
+            img.src = window.URL.createObjectURL(stream);
+            video.play();
+            video.onplay = function() {
+                showVideo();
+            },
+            function(err) {
+                console.log(`there was an error with accesing the camera stream: ${err.name} ${err}`)
+            }
+        });
 
             // Sets canvas width to 640 pixels
             canvas.width = 640;
@@ -359,12 +368,9 @@ $(document).ready(function () {
             //     // Add ratingButton to the movie-rating div in index.html
             //     $("#movie-rating").append(ratingButton);
             // }
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        }
 
-    }
+    
 
     // This code relates to the camera video.
     navigator.mediaDevices.getUserMedia(constraints).
