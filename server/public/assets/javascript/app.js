@@ -195,6 +195,53 @@ $(document).ready(function () {
         });
     }
 
+    const videoSelect = document.querySelector('#movie-posters');
+
+    function gotDevices(deviceInfos) {
+        // Handles being called several times to update labels. Preserve values.
+        const values = selectors.map(select => select.value);
+        selectors.forEach(select => {
+          while (select.firstChild) {
+            select.removeChild(select.firstChild);
+          }
+        });
+        for (let i = 0; i !== deviceInfos.length; ++i) {
+          const deviceInfo = deviceInfos[i];
+          const option = document.createElement('option');
+          option.value = deviceInfo.deviceId;
+          if (deviceInfo.kind === 'audioinput') {
+            option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+            audioInputSelect.appendChild(option);
+          } else if (deviceInfo.kind === 'audiooutput') {
+            option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+            audioOutputSelect.appendChild(option);
+          } else if (deviceInfo.kind === 'videoinput') {
+            option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+            videoSelect.appendChild(option);
+          } else {
+            console.log('Some other kind of source/device: ', deviceInfo);
+          }
+        }
+        selectors.forEach((select, selectorIndex) => {
+          if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+            select.value = values[selectorIndex];
+          }
+        });
+      }
+
+      function gotStream(stream) {
+        window.stream = stream; // make stream available to console
+        videoElement.srcObject = stream;
+        // Refresh button list in case labels have become available
+        return navigator.mediaDevices.enumerateDevices();
+      }
+
+      
+
+
+
+
+
     // MAIN PROCESS
     //******************************************************************************************************************
     //******************************************************************************************************************
@@ -230,79 +277,93 @@ $(document).ready(function () {
     video.onclick = video.onclick = function () {
         // Extract Zip Code
 
-        // Sets canvas width to 640 pixels
-        canvas.width = 640;
-        // Sets canvas height to 480 pixels
-        canvas.height = 480;
-        // Creates picture to pass to Face++
-        canvas.getContext('2d').drawImage(video, 0, 0);
+        const constraints = { 
+            video: {
+                facingMode: "environment"
+            }
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {  
 
-        // blobUtil.canvasToBlob(canvas, 'image/png', 1.0).then(function (blob) {
-        //     console.log("got into the promise.....")
-        //     uploadBlobToWatsonBackend(blob)
-        // }).catch(function (err) {
-        //     console.log(`Error while processing blobUtil ${err}`)
-        // })
+            // Sets canvas width to 640 pixels
+            canvas.width = 640;
+            // Sets canvas height to 480 pixels
+            canvas.height = 480;
+            // Creates picture to pass to Face++
+            const videoSource = videoSelect.value;
 
-        // canvas.toBlob(function (blob) {
-        //     let img_url = URL.createObjectURL(blob);
+            canvas.getContext('2d').drawImage(video, 0, 0);
 
-        //     // newImg.onload = function() {
-        //     //   // no longer need to read the blob so it's revoked
-        //     //   URL.revokeObjectURL(img_url);
-        //     // };
-        //     uploadFileToWatsonBackend(img_url);
-        //     // callWatsonBackend(img_url);
+            // blobUtil.canvasToBlob(canvas, 'image/png', 1.0).then(function (blob) {
+            //     console.log("got into the promise.....")
+            //     uploadBlobToWatsonBackend(blob)
+            // }).catch(function (err) {
+            //     console.log(`Error while processing blobUtil ${err}`)
+            // })
 
-        // }, 'image/jpeg', 1.0);
+            // canvas.toBlob(function (blob) {
+            //     let img_url = URL.createObjectURL(blob);
+
+            //     // newImg.onload = function() {
+            //     //   // no longer need to read the blob so it's revoked
+            //     //   URL.revokeObjectURL(img_url);
+            //     // };
+            //     uploadFileToWatsonBackend(img_url);
+            //     // callWatsonBackend(img_url);
+
+            // }, 'image/jpeg', 1.0);
 
 
-        // Saves data into a url
-        img.src = canvas.toDataURL('image/jpeg', 1.0);
-        // uploadBlobToWatsonBackend(img.src);
+            // Saves data into a url
+            img.src = canvas.toDataURL('image/jpeg', 1.0);
+            // uploadBlobToWatsonBackend(img.src);
 
-        // img.src.replace(/^data:image\/(png|jpg);base64,/, "");
-        // img.src = canvas.toDataURL('image/png', 1.0);
-        // Removes part of binary code to work with Face++
-        // var strippedImageSrc = img.src.substring(23, img.src.length);
+            // img.src.replace(/^data:image\/(png|jpg);base64,/, "");
+            // img.src = canvas.toDataURL('image/png', 1.0);
+            // Removes part of binary code to work with Face++
+            // var strippedImageSrc = img.src.substring(23, img.src.length);
 
-        // Passes photo taken to Face++
-        // callWatsonBackend(strippedImageSrc);
-        callWatsonBackend(img.src);
-        // var bytearray = btoa(img.src);
-        // console.log("===> the bytearray of the image is: " + bytearray);
-        // console.log("=========== the reverse now: " + atob(bytearray));
-        // callWatsonBackend(bytearray);  // encode the binary image as string
+            // Passes photo taken to Face++
+            // callWatsonBackend(strippedImageSrc);
+            callWatsonBackend(img.src);
+            // var bytearray = btoa(img.src);
+            // console.log("===> the bytearray of the image is: " + bytearray);
+            // console.log("=========== the reverse now: " + atob(bytearray));
+            // callWatsonBackend(bytearray);  // encode the binary image as string
 
-        // Remove photo capture from session
-        img.src = "";
-        strippedImageSrc = "";
+            // Remove photo capture from session
+            img.src = "";
+            strippedImageSrc = "";
 
-        // This will hide the modal that is brought up when user clicks on the submit survey button
-        $("#startSurveyModal").modal("hide")
+            // This will hide the modal that is brought up when user clicks on the submit survey button
+            $("#startSurveyModal").modal("hide")
 
-        // Remove button used to begin survey
-        $("#modalIntializeButton").remove();
+            // Remove button used to begin survey
+            $("#modalIntializeButton").remove();
 
-        // Function removes information from movie just rated and adds info for the next movie in index.html
-        // movieSurvey();
+            // Function removes information from movie just rated and adds info for the next movie in index.html
+            // movieSurvey();
 
-        // Displays content existing in the rating-history div in index.html
-        // $("#rating-history").attr("style", "display: block");
+            // Displays content existing in the rating-history div in index.html
+            // $("#rating-history").attr("style", "display: block");
 
-        // Creates five buttons for ratings
-        // for (var i = 0; i < 5; i++) {
-        //     // Assign a new button element to variable ratingButton
-        //     var ratingButton = $("<button>");
-        //     // Assign class, id, and value to each ratingButton
-        //     ratingButton.attr({
-        //         "class": "ratingButtons",
-        //         "id": "ratingButton" + (i + 1),
-        //         "ratingValue": i + 1
-        //     });
-        //     // Add ratingButton to the movie-rating div in index.html
-        //     $("#movie-rating").append(ratingButton);
-        // }
+            // Creates five buttons for ratings
+            // for (var i = 0; i < 5; i++) {
+            //     // Assign a new button element to variable ratingButton
+            //     var ratingButton = $("<button>");
+            //     // Assign class, id, and value to each ratingButton
+            //     ratingButton.attr({
+            //         "class": "ratingButtons",
+            //         "id": "ratingButton" + (i + 1),
+            //         "ratingValue": i + 1
+            //     });
+            //     // Add ratingButton to the movie-rating div in index.html
+            //     $("#movie-rating").append(ratingButton);
+            // }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
     }
 
     // This code relates to the camera video.
