@@ -11,21 +11,26 @@ var video = document.querySelector('#camera-stream'),
 
 // The getUserMedia interface is used for handling camera input.
 // Some browsers need a prefix so here we're covering all the options
-navigator.getMedia = ( navigator.getUserMedia ||
-                      navigator.webkitGetUserMedia ||
-                      navigator.mozGetUserMedia ||
-                      navigator.msGetUserMedia);
+// navigator.getMedia = ( navigator.getUserMedia ||
+//                       navigator.webkitGetUserMedia ||
+//                       navigator.mozGetUserMedia ||
+//                       navigator.msGetUserMedia);
 
 
-if(!navigator.getMedia){
-  displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
-}
-else{
+// if(!navigator.getMedia){
+//   displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
+// }
+// else{
+
+  video.setAttribute('autoplay', '');
+  video.setAttribute('muted', '');
+  video.setAttribute('playinline', '');
 
   // Request the camera.
-  navigator.getMedia(
+  navigator.mediaDevices.getUserMedia(
     {
-      video: true
+      audio: false,
+      video: {faceingMode: 'user'}
     },
     // Success Callback
     function(stream){
@@ -47,7 +52,7 @@ else{
     }
   );
 
-}
+// }
 
 
 
