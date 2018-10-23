@@ -27,80 +27,29 @@
 </head>
 
 <body>
-    <!-- Bootsrap Grid format to store movie data and rating buttons -->
-    <div class="container.fluid">
-        <div class="row no-gutters">
-            <div class="col-md-8">
-                <div class="row no-gutters align-items-center">
-                    <div class="col-md-6">
-                        <div class="row no-gutters align-items-center justify-content-center" id="movie-posters">
-                        </div>
-                        <div class="row no-gutters align-items-center justify-content-center" id="movie-rating">
-                        </div>
-                    </div>
-                    <div class="col-md-6" id="movie-info">
-                    </div>
-                </div>
-                <div class="row no-gutters align-items-center justify-content-center" id="end-div">
-                </div>
-                <div class="row no-gutters align-items-center justify-content-center" id="end-button-div">
-                </div>
-            </div>
-            <div class="col-md-4" id="rating-history" style="display: none">
-                <h3>Rating History:</h3>
-                <hr>
-            </div>
+    <h3>Demo: Take a Selfie With JavaScript</h3>
+
+    <div class="container">
+    
+      <div class="app">
+    
+        <a href="#" id="start-camera" class="visible">Touch here to start the app.</a>
+        <video id="camera-stream"></video>
+        <img id="snap">
+    
+        <p id="error-message"></p>
+    
+        <div class="controls">
+          <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
+          <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+          <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>  
         </div>
-    </div>
-
-    <!-- Begin Survey Button trigger modal -->
-    <div class="row justify-content-center">
-        <button type="button" class="btn-lg btn-primary" id="start-camera" data-toggle="modal" data-target="#startSurveyModal">
-            Begin Survey
-        </button>
-    </div>
-
-    <!-- Begin Survey Modal -->
-    <div class="modal fade" id="startSurveyModal" tabindex="-1" role="dialog" aria-labelledby="startSurveyModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title modal-text-color" id="startSurveyModalLabel">Tap the picture of your food item!</h5>
-                </div>
-                <div class="modal-body">
-                    <!-- Form to collect zipcode and photo -->
-                    <form>
-                        <br>
-                        <!-- HTML for live videa camera stream -->
-
-                        <video id="camera-stream"></video>
-                        <img id="snap">
-                    
-                        <p id="error-message"></p>
-                    
-                        <div class="controls">
-                          <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
-                          <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
-                          <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>  
-                        </div>
-                    
-                        <!-- Hidden canvas element. Used for taking snapshot of video. -->
-                        <canvas></canvas>
-
-
-
-
-
-
-                        <div>
-                            <!-- <video id="screenshot-video" class="videostream img-fluid" autoplay="true" preload="auto" muted="true" playsinline="true"></video> -->
-                            <!-- <img id="screenshot-img" src=""> -->
-                            <div id="food-item"></div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    
+        <!-- Hidden canvas element. Used for taking snapshot of video. -->
+        <canvas></canvas>
+    
+      </div>
+    
     </div>
 
 </body>
