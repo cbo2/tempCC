@@ -1,176 +1,94 @@
-// References to all the element we will need.
-var video = document.querySelector('#camera-stream'),
-    image = document.querySelector('#snap'),
-    start_camera = document.querySelector('#start-camera'),
-    controls = document.querySelector('.controls'),
-    take_photo_btn = document.querySelector('#take-photo'),
-    delete_photo_btn = document.querySelector('#delete-photo'),
-    download_photo_btn = document.querySelector('#download-photo'),
-    error_message = document.querySelector('#error-message');
 
 
-// The getUserMedia interface is used for handling camera input.
-// Some browsers need a prefix so here we're covering all the options
-// navigator.getMedia = ( navigator.getUserMedia ||
-//                       navigator.webkitGetUserMedia ||
-//                       navigator.mozGetUserMedia ||
-//                       navigator.msGetUserMedia);
+'use strict';
 
+const videoElement = document.querySelector('video');
+const audioInputSelect = document.querySelector('select#audioSource');
+const audioOutputSelect = document.querySelector('select#audioOutput');
+const videoSelect = document.querySelector('select#videoSource');
+const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
 
-// if(!navigator.getMedia){
-//   displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
-// }
-// else{
+audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 
-//   video.setAttribute('autoplay', '');
-  video.setAttribute('muted', '');
-  video.setAttribute('playinline', true);
-  video.setAttribute('controls', true);
-
-  var constraints = {
-      audio: false,
-      video: {faceingMode: 'environment'}
-  }
-
-  // Request the camera.
-//   navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
-//       video.srcObject = stream;
-//   });
-
-    navigator.mediaDevices.getUserMedia(constraints).then(
-    // Success Callback
-    function (stream){
-
-      // Create an object URL for the video stream and
-      // set it as src of our HTLM video element.
-    //   video.src = window.URL.createObjectURL(stream);
-            video.src = stream;
-
-
-      // Play the video element to start the stream.
-      video.play();
-      video.onplay = function() {
-        showVideo();
-      };
-
+function gotDevices(deviceInfos) {
+  // Handles being called several times to update labels. Preserve values.
+  const values = selectors.map(select => select.value);
+  selectors.forEach(select => {
+    while (select.firstChild) {
+      select.removeChild(select.firstChild);
     }
-    // Error Callback
-    // function error(err){
-    //   displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
-    // }
-  );
+  });
+  for (let i = 0; i !== deviceInfos.length; ++i) {
+    const deviceInfo = deviceInfos[i];
+    const option = document.createElement('option');
+    option.value = deviceInfo.deviceId;
+    if (deviceInfo.kind === 'videoinput') {
+      option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+      console.log("==> now appending the vidoeselection of: " + option.text)
+      videoSelect.appendChild(option);
+    } 
+  }
+  selectors.forEach((select, selectorIndex) => {
+    if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+      select.value = values[selectorIndex];
+    }
+  });
+}
 
+navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+
+// Attach audio output device to video element using device/sink ID.
+function attachSinkId(element, sinkId) {
+  if (typeof element.sinkId !== 'undefined') {
+    element.setSinkId(sinkId)
+      .then(() => {
+        console.log(`Success, audio output device attached: ${sinkId}`);
+      })
+      .catch(error => {
+        let errorMessage = error;
+        if (error.name === 'SecurityError') {
+          errorMessage = `You need to use HTTPS for selecting audio output device: ${error}`;
+        }
+        console.error(errorMessage);
+        // Jump back to first output device in the list as it's the default.
+        audioOutputSelect.selectedIndex = 0;
+      });
+  } else {
+    console.warn('Browser does not support output device selection.');
+  }
+}
+
+// function changeAudioDestination() {
+//   const audioDestination = audioOutputSelect.value;
+//   attachSinkId(videoElement, audioDestination);
 // }
 
-
-
-// Mobile browsers cannot play video without user input,
-// so here we're using a button to start it manually.
-start_camera.addEventListener("click", function(e){
-
-  e.preventDefault();
-
-  // Start video playback manually.
-  video.play();
-  showVideo();
-
-});
-
-
-take_photo_btn.addEventListener("click", function(e){
-
-  e.preventDefault();
-
-  var snap = takeSnapshot();
-
-  // Show image. 
-  image.setAttribute('src', snap);
-  image.classList.add("visible");
-
-  // Enable delete and save buttons
-  delete_photo_btn.classList.remove("disabled");
-  download_photo_btn.classList.remove("disabled");
-
-  // Set the href attribute of the download button to the snap url.
-  download_photo_btn.href = snap;
-
-  // Pause video playback of stream.
-  video.pause();
-
-});
-
-
-delete_photo_btn.addEventListener("click", function(e){
-
-  e.preventDefault();
-
-  // Hide image.
-  image.setAttribute('src', "");
-  image.classList.remove("visible");
-
-  // Disable delete and save buttons
-  delete_photo_btn.classList.add("disabled");
-  download_photo_btn.classList.add("disabled");
-
-  // Resume playback of stream.
-  video.play();
-
-});
-
-
-
-function showVideo(){
-  // Display the video stream and the controls.
-
-  hideUI();
-  video.classList.add("visible");
-  controls.classList.add("visible");
+function gotStream(stream) {
+  window.stream = stream; // make stream available to console
+  videoElement.srcObject = stream;
+  // Refresh button list in case labels have become available
+  return navigator.mediaDevices.enumerateDevices();
 }
 
+function handleError(error) {
+  console.log('navigator.getUserMedia error: ', error);
+}
 
-function takeSnapshot(){
-  // Here we're using a trick that involves a hidden canvas element.  
-
-  var hidden_canvas = document.querySelector('canvas'),
-      context = hidden_canvas.getContext('2d');
-
-  var width = video.videoWidth,
-      height = video.videoHeight;
-
-  if (width && height) {
-
-    // Setup a canvas with the same dimensions as the video.
-    hidden_canvas.width = width;
-    hidden_canvas.height = height;
-
-    // Make a copy of the current frame in the video on the canvas.
-    context.drawImage(video, 0, 0, width, height);
-
-    // Turn the canvas image into a dataURL that can be used as a src for our photo.
-    return hidden_canvas.toDataURL('image/png');
+function start() {
+  if (window.stream) {
+    window.stream.getTracks().forEach(track => {
+      track.stop();
+    });
   }
+  const videoSource = videoSelect.value;
+  console.log(`videoselect value is: ${videoSelect.value}`)
+  console.log(`the videoSource is: ${videoSource}`)
+
+  const constraints = {
+    video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+  };
+  navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
 }
 
 
-function displayErrorMessage(error_msg, error){
-  error = error || "";
-  if(error){
-    console.log(error);
-  }
-
-  error_message.innerText = error_msg;
-
-  hideUI();
-  error_message.classList.add("visible");
-}
-
-
-function hideUI(){
-  // Helper function for clearing the app UI.
-
-  controls.classList.remove("visible");
-  start_camera.classList.remove("visible");
-  video.classList.remove("visible");
-  snap.classList.remove("visible");
-  error_message.classList.remove("visible");
-}
+start();
