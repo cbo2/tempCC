@@ -125,8 +125,6 @@ $(document).ready(function () {
                 $("#movie-info").append(JSON.stringify(res));
             });
 
-
-
         // $.ajax("/hitwatson", {
         //     type: "POST",
         //     data: JSON.stringify({
