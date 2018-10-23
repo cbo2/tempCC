@@ -104,7 +104,8 @@ function start() {
 
 
   const constraints = {
-    video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+    // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+    video: {deviceId: preferredDevice}
   };
   navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
 }
