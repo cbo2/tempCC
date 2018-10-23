@@ -31,10 +31,12 @@ function gotDevices(deviceInfos) {
       videoSelect.appendChild(option);
       deviceNames.push(deviceInfo.label);
       if (!preferredDevice) {
+          console.log(`now setting the preffered device to: ${JSON.stringify(deviceInfo)}`)
           preferredDevice = deviceInfo;  // take a camera of some kind
       } else { 
           if (deviceInfo.label === "Back Camera") {
-              preferredDevice = deviceInfo;  // prefer the back camera!
+            console.log(`now setting the preffered device to back camera: ${JSON.stringify(deviceInfo)}`)
+            preferredDevice = deviceInfo;  // prefer the back camera!
           }
       }
     } 
@@ -101,11 +103,14 @@ function start() {
   console.log(`the video name is: ${JSON.stringify(videoSelect[2])}`)
   console.log(`videoselect value is: ${videoSelect.value}`)
   console.log(`the videoSource is: ${videoSource}`)
+  if (preferredDevice) {
+    console.log(`the preferred Device id is: ${preferredDevice.deviceId}`)
+  }
 
 
   const constraints = {
     // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
-    video: {deviceId: preferredDevice.deviceId}
+    video: {deviceId: {exact: preferredDevice.deviceId}}
   };
   navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
 }
