@@ -24,7 +24,8 @@ var video = document.querySelector('#camera-stream'),
 
 //   video.setAttribute('autoplay', '');
   video.setAttribute('muted', '');
-  video.setAttribute('playinline', '');
+  video.setAttribute('playinline', true);
+  video.setAttribute('controls', true);
 
   var constraints = {
       audio: false,
@@ -38,7 +39,7 @@ var video = document.querySelector('#camera-stream'),
 
     navigator.mediaDevices.getUserMedia(constraints).then(
     // Success Callback
-    function success(stream){
+    function (stream){
 
       // Create an object URL for the video stream and
       // set it as src of our HTLM video element.
@@ -52,11 +53,11 @@ var video = document.querySelector('#camera-stream'),
         showVideo();
       };
 
-    },
-    // Error Callback
-    function error(err){
-      displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
     }
+    // Error Callback
+    // function error(err){
+    //   displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
+    // }
   );
 
 // }
