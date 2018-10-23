@@ -9,6 +9,7 @@ const videoSelect = document.querySelector('select#videoSource');
 const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
 
 audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+let deviceNames = [];
 
 function gotDevices(deviceInfos) {
   // Handles being called several times to update labels. Preserve values.
@@ -20,14 +21,20 @@ function gotDevices(deviceInfos) {
   });
   for (let i = 0; i !== deviceInfos.length; ++i) {
     const deviceInfo = deviceInfos[i];
+    console.log(`"===> the device info is: ${JSON.stringify(deviceInfo)}`)
     const option = document.createElement('option');
     option.value = deviceInfo.deviceId;
     if (deviceInfo.kind === 'videoinput') {
       option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
-      console.log("==> now appending the vidoeselection of: " + option.text)
+      console.log("==> now appending the vidoeselection of: " + deviceInfo.label)
       videoSelect.appendChild(option);
+      deviceNames.push(deviceInfo.label);
     } 
+    const option2 = document.createElement('option');
+    option2.value = "option" + i;
+    videoSelect.appendChild(option2);
   }
+  document.getElementById("selection-output").innerHTML = "Device names: " + deviceNames;
   selectors.forEach((select, selectorIndex) => {
     if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
       select.value = values[selectorIndex];
@@ -81,8 +88,10 @@ function start() {
     });
   }
   const videoSource = videoSelect.value;
+  console.log(`the video name is: ${JSON.stringify(videoSelect[2])}`)
   console.log(`videoselect value is: ${videoSelect.value}`)
   console.log(`the videoSource is: ${videoSource}`)
+
 
   const constraints = {
     video: {deviceId: videoSource ? {exact: videoSource} : undefined}
@@ -90,5 +99,6 @@ function start() {
   navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
 }
 
+videoSelect.onchange = start;
 
 start();
