@@ -264,8 +264,8 @@ $(document).ready(function () {
         // Request the camera.
         navigator.getMedia(
             {
-                video: true
-                // video: {facingMode: "environment"}   // use the camera on the back of the phone
+                video: true,
+                video: {facingMode: "front"}   // use the camera on the back of the phone (environment)
             },
             // Success Callback
             function (stream) {
