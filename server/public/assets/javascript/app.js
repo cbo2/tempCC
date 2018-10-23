@@ -427,11 +427,11 @@ $(document).ready(function () {
     // }
 
     // Check if window supports camera functionality
-    if (hasGetUserMedia()) {
-        // Good to go!
-    } else {
-        alert('getUserMedia() is not supported by your browser');
-    }
+    // if (hasGetUserMedia()) {
+    //     // Good to go!
+    // } else {
+    //     alert('getUserMedia() is not supported by your browser');
+    // }
 
     // If user clicks on Start Survey button, then execute the below code
     // $("#modalIntializeButton").on('click', function () {
