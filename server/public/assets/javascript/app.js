@@ -42,7 +42,7 @@ var video = document.querySelector('#camera-stream'),
 
       // Create an object URL for the video stream and
       // set it as src of our HTLM video element.
-      video.src = window.URL.createObjectURL(stream);
+      video.srcObject = window.URL.createObjectURL(stream);
 
       // Play the video element to start the stream.
       video.play();
