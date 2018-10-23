@@ -64,3 +64,61 @@ hr {
 #ratingButton5 {
     background-image: url("..//images/fist5-5.png");
 }
+
+
+.app canvas{
+    display: none;
+}
+
+
+
+.app video#camera-stream.visible,
+.app img#snap.visible,
+.app #error-message.visible
+{
+    display: block;
+}
+
+.app .controls.visible{
+    display: flex;
+}
+
+
+
+@media(max-width: 1000px){
+    .container{
+        margin: 40px;
+    }
+
+    .app #start-camera.visible{
+        display: block;
+    }
+
+    .app .controls a i{
+        font-size: 16px;
+    }
+
+    .app .controls #take-photo i{
+        font-size: 24px;
+    }
+}
+
+
+@media(max-width: 600px){
+    .container{
+        margin: 10px;
+    }
+
+    .app #error-message{
+        padding: 80px 50px;
+        font-size: 18px;
+    }
+
+    .app .controls a i{
+        font-size: 12px;
+    }
+
+    .app .controls #take-photo i{
+        font-size: 18px;
+    }
+}

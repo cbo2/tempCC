@@ -17,10 +17,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
-    <script src = "/path/to/clientside-require.js"></script>
-    <script>
-        var multer  = load('multer')
-    </script>
+    <!-- <script src = "/path/to/clientside-require.js"></script> -->
 
     <script src="https://unpkg.com/blob-util/dist/blob-util.min.js"></script>
     <script src="assets/javascript/app.js"></script>
@@ -58,7 +55,7 @@
 
     <!-- Begin Survey Button trigger modal -->
     <div class="row justify-content-center">
-        <button type="button" class="btn-lg btn-primary" id="modalIntializeButton" data-toggle="modal" data-target="#startSurveyModal">
+        <button type="button" class="btn-lg btn-primary" id="start-camera" data-toggle="modal" data-target="#startSurveyModal">
             Begin Survey
         </button>
     </div>
@@ -75,10 +72,29 @@
                     <form>
                         <br>
                         <!-- HTML for live videa camera stream -->
-                        <h6 class="modal-text-color">Tap the video stream to snap your picture!</h6>
+
+                        <video id="camera-stream"></video>
+                        <img id="snap">
+                    
+                        <p id="error-message"></p>
+                    
+                        <div class="controls">
+                          <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
+                          <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+                          <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>  
+                        </div>
+                    
+                        <!-- Hidden canvas element. Used for taking snapshot of video. -->
+                        <canvas></canvas>
+
+
+
+
+
+
                         <div>
-                            <video id="screenshot-video" class="videostream img-fluid" autoplay="true" preload="auto" muted="true" playsinline="true"></video>
-                            <img id="screenshot-img" src="">
+                            <!-- <video id="screenshot-video" class="videostream img-fluid" autoplay="true" preload="auto" muted="true" playsinline="true"></video> -->
+                            <!-- <img id="screenshot-img" src=""> -->
                             <div id="food-item"></div>
                         </div>
                     </form>

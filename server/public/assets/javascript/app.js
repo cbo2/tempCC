@@ -10,13 +10,13 @@ $(document).ready(function () {
     //******************************************************************************************************************
 
     // Video camera
-    const constraints = {
-        video: true
-    };
+    // const constraints = {
+    //     video: true
+    // };
 
-    const img = document.querySelector('#screenshot-img');
-    const video = document.querySelector('#screenshot-video');
-    const canvas = document.createElement('canvas');
+    // const img = document.querySelector('#screenshot-img');
+    // const video = document.querySelector('#screenshot-video');
+    // const canvas = document.createElement('canvas');
 
     // Object vairable to store data to be sent to Firebase
     // var database = Object;
@@ -95,7 +95,7 @@ $(document).ready(function () {
         // var multer  = load('multer')
         // var upload = multer({ dest: 'uploads/' })
         console.log("after upload");
-        $.post('/testFormData', { image: blob }, 
+        $.post('/testFormData', { image: blob },
             function (res) {
                 console.log("==> the response to /api/upload: " + JSON.stringify(res));
             });
@@ -201,44 +201,209 @@ $(document).ready(function () {
         // Handles being called several times to update labels. Preserve values.
         const values = selectors.map(select => select.value);
         selectors.forEach(select => {
-          while (select.firstChild) {
-            select.removeChild(select.firstChild);
-          }
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
         });
         for (let i = 0; i !== deviceInfos.length; ++i) {
-          const deviceInfo = deviceInfos[i];
-          const option = document.createElement('option');
-          option.value = deviceInfo.deviceId;
-          if (deviceInfo.kind === 'audioinput') {
-            option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
-            audioInputSelect.appendChild(option);
-          } else if (deviceInfo.kind === 'audiooutput') {
-            option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
-            audioOutputSelect.appendChild(option);
-          } else if (deviceInfo.kind === 'videoinput') {
-            option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
-            videoSelect.appendChild(option);
-          } else {
-            console.log('Some other kind of source/device: ', deviceInfo);
-          }
+            const deviceInfo = deviceInfos[i];
+            const option = document.createElement('option');
+            option.value = deviceInfo.deviceId;
+            if (deviceInfo.kind === 'audioinput') {
+                option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+                audioInputSelect.appendChild(option);
+            } else if (deviceInfo.kind === 'audiooutput') {
+                option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+                audioOutputSelect.appendChild(option);
+            } else if (deviceInfo.kind === 'videoinput') {
+                option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+                videoSelect.appendChild(option);
+            } else {
+                console.log('Some other kind of source/device: ', deviceInfo);
+            }
         }
         selectors.forEach((select, selectorIndex) => {
-          if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
-            select.value = values[selectorIndex];
-          }
+            if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+                select.value = values[selectorIndex];
+            }
         });
-      }
+    }
 
-      function gotStream(stream) {
+    function gotStream(stream) {
         window.stream = stream; // make stream available to console
         videoElement.srcObject = stream;
         // Refresh button list in case labels have become available
         return navigator.mediaDevices.enumerateDevices();
-      }
-
-      
+    }
 
 
+    // References to all the element we will need.
+    var video = document.querySelector('#camera-stream'),
+        image = document.querySelector('#snap'),
+        start_camera = document.querySelector('#start-camera'),
+        controls = document.querySelector('.controls'),
+        take_photo_btn = document.querySelector('#take-photo'),
+        delete_photo_btn = document.querySelector('#delete-photo'),
+        download_photo_btn = document.querySelector('#download-photo'),
+        error_message = document.querySelector('#error-message');
+
+
+    // The getUserMedia interface is used for handling camera input.
+    // Some browsers need a prefix so here we're covering all the options
+    navigator.getMedia = (navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia);
+
+
+    if (!navigator.getMedia) {
+        displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
+    }
+    else {
+
+        // Request the camera.
+        navigator.getMedia(
+            {
+                // video: true
+                video: {facingMode: "environment"}   // use the camera on the back of the phone
+            },
+            // Success Callback
+            function (stream) {
+
+                // Create an object URL for the video stream and
+                // set it as src of our HTLM video element.
+                video.src = window.URL.createObjectURL(stream);
+
+                // Play the video element to start the stream.
+                video.play();
+                video.onplay = function () {
+                    showVideo();
+                };
+
+            },
+            // Error Callback
+            function (err) {
+                displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
+            }
+        );
+
+    }
+
+
+
+    // Mobile browsers cannot play video without user input,
+    // so here we're using a button to start it manually.
+    start_camera.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        // Start video playback manually.
+        video.play();
+        showVideo();
+
+    });
+
+
+    take_photo_btn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        var snap = takeSnapshot();
+
+
+        // Show image. 
+        image.setAttribute('src', snap);
+        image.classList.add("visible");
+
+        callWatsonBackend(image.src);
+
+        // Enable delete and save buttons
+        delete_photo_btn.classList.remove("disabled");
+        download_photo_btn.classList.remove("disabled");
+
+        // Set the href attribute of the download button to the snap url.
+        download_photo_btn.href = snap;
+
+        // Pause video playback of stream.
+        video.pause();
+
+    });
+
+
+    delete_photo_btn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        // Hide image.
+        image.setAttribute('src', "");
+        image.classList.remove("visible");
+
+        // Disable delete and save buttons
+        delete_photo_btn.classList.add("disabled");
+        download_photo_btn.classList.add("disabled");
+
+        // Resume playback of stream.
+        video.play();
+
+    });
+
+
+
+    function showVideo() {
+        // Display the video stream and the controls.
+
+        hideUI();
+        video.classList.add("visible");
+        controls.classList.add("visible");
+    }
+
+
+    function takeSnapshot() {
+        // Here we're using a trick that involves a hidden canvas element.  
+
+        var hidden_canvas = document.querySelector('canvas'),
+            context = hidden_canvas.getContext('2d');
+
+        var width = video.videoWidth = 640,
+            height = video.videoHeight = 480;
+
+        if (width && height) {
+
+            // Setup a canvas with the same dimensions as the video.
+            hidden_canvas.width = width;
+            hidden_canvas.height = height;
+
+            // Make a copy of the current frame in the video on the canvas.
+            context.drawImage(video, 0, 0, width, height);
+
+            // Turn the canvas image into a dataURL that can be used as a src for our photo.
+            return hidden_canvas.toDataURL('image/jpeg', 1.0);
+        }
+    }
+
+
+    function displayErrorMessage(error_msg, error) {
+        error = error || "";
+        if (error) {
+            console.log(error);
+        }
+
+        error_message.innerText = error_msg;
+
+        hideUI();
+        error_message.classList.add("visible");
+    }
+
+
+    function hideUI() {
+        // Helper function for clearing the app UI.
+
+        controls.classList.remove("visible");
+        start_camera.classList.remove("visible");
+        video.classList.remove("visible");
+        snap.classList.remove("visible");
+        error_message.classList.remove("visible");
+    }
 
 
 
@@ -270,166 +435,13 @@ $(document).ready(function () {
 
     // If user clicks on Start Survey button, then execute the below code
     // $("#modalIntializeButton").on('click', function () {
-    //     //Prevent modal from closing by clicking outside of modal to be coded
+    //     //     //Prevent modal from closing by clicking outside of modal to be coded
+    //     e.preventDefault();
+
+    //     // Start video playback manually.
+    //     img.play();
+    //     showVideo();
     // });
-
-    // If user clicks on video camera feed, then execute the below code
-    video.onclick = video.onclick = function () {
-        // Extract Zip Code
-
-        const constraints = { 
-            video: {
-                facingMode: "environment"
-            }
-        }
-        navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {  
-            img.src = window.URL.createObjectURL(stream);
-            video.play();
-            video.onplay = function() {
-                showVideo();
-            },
-            function(err) {
-                console.log(`there was an error with accesing the camera stream: ${err.name} ${err}`)
-            }
-        });
-
-            // Sets canvas width to 640 pixels
-            canvas.width = 640;
-            // Sets canvas height to 480 pixels
-            canvas.height = 480;
-            // Creates picture to pass to Face++
-            const videoSource = videoSelect.value;
-
-            canvas.getContext('2d').drawImage(video, 0, 0);
-
-            // blobUtil.canvasToBlob(canvas, 'image/png', 1.0).then(function (blob) {
-            //     console.log("got into the promise.....")
-            //     uploadBlobToWatsonBackend(blob)
-            // }).catch(function (err) {
-            //     console.log(`Error while processing blobUtil ${err}`)
-            // })
-
-            // canvas.toBlob(function (blob) {
-            //     let img_url = URL.createObjectURL(blob);
-
-            //     // newImg.onload = function() {
-            //     //   // no longer need to read the blob so it's revoked
-            //     //   URL.revokeObjectURL(img_url);
-            //     // };
-            //     uploadFileToWatsonBackend(img_url);
-            //     // callWatsonBackend(img_url);
-
-            // }, 'image/jpeg', 1.0);
-
-
-            // Saves data into a url
-            img.src = canvas.toDataURL('image/jpeg', 1.0);
-            // uploadBlobToWatsonBackend(img.src);
-
-            // img.src.replace(/^data:image\/(png|jpg);base64,/, "");
-            // img.src = canvas.toDataURL('image/png', 1.0);
-            // Removes part of binary code to work with Face++
-            // var strippedImageSrc = img.src.substring(23, img.src.length);
-
-            // Passes photo taken to Face++
-            // callWatsonBackend(strippedImageSrc);
-            callWatsonBackend(img.src);
-            // var bytearray = btoa(img.src);
-            // console.log("===> the bytearray of the image is: " + bytearray);
-            // console.log("=========== the reverse now: " + atob(bytearray));
-            // callWatsonBackend(bytearray);  // encode the binary image as string
-
-            // Remove photo capture from session
-            img.src = "";
-            strippedImageSrc = "";
-
-            // This will hide the modal that is brought up when user clicks on the submit survey button
-            $("#startSurveyModal").modal("hide")
-
-            // Remove button used to begin survey
-            $("#modalIntializeButton").remove();
-
-            // Function removes information from movie just rated and adds info for the next movie in index.html
-            // movieSurvey();
-
-            // Displays content existing in the rating-history div in index.html
-            // $("#rating-history").attr("style", "display: block");
-
-            // Creates five buttons for ratings
-            // for (var i = 0; i < 5; i++) {
-            //     // Assign a new button element to variable ratingButton
-            //     var ratingButton = $("<button>");
-            //     // Assign class, id, and value to each ratingButton
-            //     ratingButton.attr({
-            //         "class": "ratingButtons",
-            //         "id": "ratingButton" + (i + 1),
-            //         "ratingValue": i + 1
-            //     });
-            //     // Add ratingButton to the movie-rating div in index.html
-            //     $("#movie-rating").append(ratingButton);
-            // }
-        }
-
-    
-
-    // This code relates to the camera video.
-    navigator.mediaDevices.getUserMedia(constraints).
-        then(handleSuccess).catch(handleError);
-
-    // If user rates a movie, then execute the below code to move to the next movie until rated all movies
-    $(document).on('click', ".ratingButtons", function () {
-
-        // Run this code if not all of the movies have been rated
-        if (movieArrayIndex < movieArray.length - 1) {
-            // Empty contents of movie-posters div in index.html
-            $("#movie-posters").empty();
-            // Empty contents of movie-info div in index.html
-            $("#movie-info").empty();
-            // Assign the value of the rating to variable userRating when clicked
-            var userRating = parseInt($(this).attr("ratingValue"));
-            // Append the movie rating into rating-history div in index.html
-            $("#rating-history").append(movieArray[movieArrayIndex] + ": " + userRating + "<br><hr>");
-
-            console.log("User just rated " + movieArray[movieArrayIndex] + " with a value of: " + userRating);
-            // persist the rating for this movie
-            addForMovie(movieArray[movieArrayIndex], userRating, gender, ethnicity, age, zipcode);
-            // Increase movieArrayIndex by one
-            movieArrayIndex++;
-            // Function removes information from movie just rated and adds info for the next movie in index.html
-            movieSurvey();
-
-            // Run this code if all movies have been rated
-        } else {
-            // Assign the value of the rating to variable userRating when clicked for last movie rated in survey
-            var userRating = parseInt($(this).attr("ratingValue"));
-            $("#rating-history").append(movieArray[movieArrayIndex] + ": " + userRating + "<br><hr>");
-            // persist the rating for the last movie 
-            addForMovie(movieArray[movieArrayIndex], userRating, gender, ethnicity, age, zipcode);
-            // Empty contents of movie-posters div in index.html
-            $("#movie-posters").empty();
-            // Empty contents of movie-info div in index.html
-            $("#movie-info").empty();
-            // Empty contents of movie-rating div in index.html
-            $("#movie-rating").empty();
-            // Append a final message once movie survey is completed in index.html
-            $("#end-div").append("<h1 class=text-center>All Done! Thanks for taking the survey!</h1><br>")
-
-            // Assign a new button element to variable closeWindowButton
-            var closeWindowButton = $("<button>");
-            // Assign type, class, and id to variable closeWindowButton
-            closeWindowButton.attr({
-                "type": "button",
-                "class": "btn-lg btn-primary",
-                "id": "close-window-button"
-            })
-            // Add text to be displayed in closeWindowButton
-            closeWindowButton.text("Click to Close");
-            // Append button to the end-button-div div in index.html
-            $("#end-button-div").append(closeWindowButton);
-            // Prepend a <br> to the rating-history div in index.html for aesthetics
-            $("#rating-history").prepend("<br>");
-        }
-    });
 
     // If user clicks the Click to Close button, then execute the below code to close window
     $(document).on('click', "#close-window-button", function () {
