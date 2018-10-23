@@ -56,19 +56,19 @@ $(document).ready(function () {
     // }
 
     // Function to check if window supports camera functionality
-    function hasGetUserMedia() {
-        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-    }
+    // function hasGetUserMedia() {
+    //     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    // }
 
-    // Function for video to determine if video stream works
-    function handleSuccess(stream) {
-        video.srcObject = stream;
-    }
+    // // Function for video to determine if video stream works
+    // function handleSuccess(stream) {
+    //     video.srcObject = stream;
+    // }
 
-    // Function if video stream fails
-    function handleError(error) {
-        console.error('Reeeejected!', error);
-    }
+    // // Function if video stream fails
+    // function handleError(error) {
+    //     console.error('Reeeejected!', error);
+    // }
 
     function uploadBlobToWatsonBackend(blob) {
         console.log("--- got into the call to uploadBlobToWatsonBackend");
