@@ -10,6 +10,7 @@ const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
 
 audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 let deviceNames = [];
+let preferredDevice = null;
 
 function gotDevices(deviceInfos) {
   // Handles being called several times to update labels. Preserve values.
@@ -29,12 +30,21 @@ function gotDevices(deviceInfos) {
       console.log("==> now appending the vidoeselection of: " + deviceInfo.label)
       videoSelect.appendChild(option);
       deviceNames.push(deviceInfo.label);
+      if (!preferredDevice) {
+          preferredDevice = deviceInfo;  // take a camera of some kind
+      } else { 
+          if (deviceInfo.label === "Back Camera") {
+              preferredDevice = deviceInfo;  // prefer the back camera!
+          }
+      }
     } 
     const option2 = document.createElement('option');
     option2.value = "option" + i;
     videoSelect.appendChild(option2);
   }
   document.getElementById("selection-output").innerHTML = "Device names: " + deviceNames;
+  document.getElementById("preferred-camera").innerHTML = "The preferred camera is: " + preferredDevice.label;
+
   selectors.forEach((select, selectorIndex) => {
     if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
       select.value = values[selectorIndex];
