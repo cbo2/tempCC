@@ -29,7 +29,7 @@ var video = document.querySelector('#camera-stream'),
 
   var constraints = {
       audio: false,
-      video: {faceingMode: 'environment'}
+      video: {faceingMode: {exact: 'environment'}}
   }
 
   // Request the camera.
