@@ -15,7 +15,8 @@ html{
 
 h3{
     font: normal 32px/1.5 'Open Sans', sans-serif;
-    color: #2c3e50;
+    /* color: #2c3e50; */
+    color: purple;
     margin: 50px 0;
     text-align: center;
 }
@@ -23,6 +24,7 @@ h3{
 
 .container{
     max-width: 1000px;
+    height: 100%;
     margin: 50px auto;
     padding: 20px;
     background-color: #efefef;
