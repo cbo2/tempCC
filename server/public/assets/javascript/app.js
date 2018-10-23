@@ -54,12 +54,12 @@ function gotDevices(deviceInfos) {
     });
 }
 
-navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
-const constraints = {
-    // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
-    video: { deviceId: { exact: preferredDevice.deviceId } }
-};
-navigator.mediaDevices.enumerateDevices(constraints).then(gotDevices).catch(handleError);
+// navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+// const constraints = {
+//     // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+//     video: { deviceId: { exact: preferredDevice.deviceId } }
+// };
+// navigator.mediaDevices.enumerateDevices(constraints).then(gotDevices).catch(handleError);
 
 // Attach audio output device to video element using device/sink ID.
 function attachSinkId(element, sinkId) {
@@ -114,8 +114,8 @@ function start() {
 
 
     const constraints = {
-        // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
-        video: { deviceId: { exact: preferredDevice.deviceId } }
+        video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+        // video: { deviceId: { exact: preferredDevice.deviceId } }
     };
     navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
 }
