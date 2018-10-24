@@ -65,8 +65,11 @@ const constraints = {
 navigator.mediaDevices.enumerateDevices().then(devices => {
     gotDevices(devices)
     constraints.video.deviceId.exact = preferredDevice.deviceId;
+    console.log(`*** the preferred deviceid now set to: ${constraints.video.deviceId.exact}`)
     return devices;
-}).then(devices => {
+}).then(stream => {
+    console.log(`*** about to set the stream with: ${constraints.video.deviceId.exact} AND 
+    ${JSON.stringify(stream)}`)
     navigator.mediaDevices.enumerateDevices(constraints).then(stream => {
         gotStream(stream)
     })
