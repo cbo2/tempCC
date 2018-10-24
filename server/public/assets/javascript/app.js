@@ -11,9 +11,9 @@ const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
 audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 let deviceNames = [];
 let preferredDevice = null;
-let deviceInfos = navigator.mediaDevices.enumerateDevices();
+// let deviceInfos = navigator.mediaDevices.enumerateDevices();
 
-gotDevices(deviceInfos);
+// gotDevices(deviceInfos);
 
 function gotDevices(deviceInfos) {
     // Handles being called several times to update labels. Preserve values.
@@ -57,12 +57,26 @@ function gotDevices(deviceInfos) {
     });
 }
 
-// navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
 const constraints = {
     // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
-    video: { deviceId: { exact: preferredDevice.deviceId } }
+    video: { deviceId: { exact: undefined } }
 };
-navigator.mediaDevices.enumerateDevices(constraints).then(gotDevices).catch(handleError);
+// first call it to discover all the devices....
+navigator.mediaDevices.enumerateDevices().then(devices => {
+    gotDevices(devices)
+    constraints.video.deviceId.exact = preferredDevice.deviceId;
+    return devices;
+}).then(devices => {
+    navigator.mediaDevices.enumerateDevices(constraints).then(stream => {
+        gotStream(stream)
+    })
+}).catch(handleError);
+// const constraints = {
+//     // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+//     video: { deviceId: { exact: preferredDevice.deviceId } }
+// };
+// then call it to set the preferred device
+// navigator.mediaDevices.enumerateDevices(constraints).then(gotDevices).catch(handleError);
 
 // Attach audio output device to video element using device/sink ID.
 function attachSinkId(element, sinkId) {
@@ -117,7 +131,7 @@ function start() {
 
 
     const constraints = {
-        video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+        video: { deviceId: videoSource ? { exact: videoSource } : undefined }
         // video: { deviceId: { exact: preferredDevice.deviceId } }
     };
     navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
