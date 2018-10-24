@@ -72,6 +72,8 @@ navigator.mediaDevices.enumerateDevices().then(devices => {
     ${JSON.stringify(stream)}`)
     navigator.mediaDevices.enumerateDevices(constraints).then(stream => {
         gotStream(stream)
+    }).then(devices => {
+        gotDevices(devices)
     })
 }).catch(handleError);
 // const constraints = {
