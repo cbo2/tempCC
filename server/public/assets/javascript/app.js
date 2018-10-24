@@ -38,8 +38,9 @@ function gotDevices(deviceInfos) {
                 console.log(`now setting the preffered device to: ${JSON.stringify(deviceInfo)}`)
                 preferredDevice = deviceInfo;  // take a camera of some kind
             } else {
-                if (deviceInfo.label === "Back Camera") {
-                    console.log(`now setting the preffered device to back camera: ${JSON.stringify(deviceInfo)}`)
+                // if (deviceInfo.label === "Back Camera") {
+                if (deviceInfo.label.match('[Bb]ack')) {
+                        console.log(`now setting the preffered device to back camera: ${JSON.stringify(deviceInfo)}`)
                     preferredDevice = deviceInfo;  // prefer the back camera!
                 }
             }
@@ -71,7 +72,7 @@ navigator.mediaDevices.enumerateDevices().then(devices => {
 }).then(stream => {
     console.log(`*** about to set the stream with: ${constraints.video.deviceId.exact} AND 
     ${JSON.stringify(stream)}`)
-    navigator.getUserMedia(constraints).then(stream => {
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
         gotStream(stream)
     }).then(devices => {
         gotDevices(devices)
