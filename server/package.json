@@ -17,9 +17,10 @@
     "watson-developer-cloud": "^3.4.5"
   },
   "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "deploy": "gh-pages -d build"
+  "scripts": {  
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "node app.js"
   },
   "license": "Apache-2.0",
   "repository": {
