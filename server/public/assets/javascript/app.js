@@ -74,6 +74,7 @@ navigator.mediaDevices.enumerateDevices().then(devices => {
         gotStream(stream)
     }).then(devices => {
         gotDevices(devices)
+        start()
     })
 }).catch(handleError);
 // const constraints = {
@@ -144,4 +145,4 @@ function start() {
 
 videoSelect.onchange = start;
 
-start();
+// start();
