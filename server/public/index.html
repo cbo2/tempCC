@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-
+<!--
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+-->
 <html>
 <head>
 
@@ -39,7 +45,7 @@
 <body>
 <div id="container">
 
-    <!-- <h1><a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a><span>Select sources &amp; outputs</span>
+    <h1><a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a><span>Select sources &amp; outputs</span>
     </h1>
 
     <p>Get available audio, video sources and audio output devices from <code>mediaDevices.enumerateDevices()</code>
@@ -51,26 +57,23 @@
 
     <div class="select">
         <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
-    </div> -->
+    </div>
 
     <div class="select">
         <label for="videoSource">Video source: </label><select id="videoSource"></select>
     </div>
 
-    <div id="selection-output"></div>
-    <div id="preferred-camera"></div>
-    
     <video id="video" playsinline autoplay></video>
 
-    <!-- <p class="small"><b>Note:</b> If you hear a reverb sound your microphone is picking up the output of your
-        speakers/headset, lower the volume and/or move the microphone further away from your speakers/headset.</p> -->
+    <p class="small"><b>Note:</b> If you hear a reverb sound your microphone is picking up the output of your
+        speakers/headset, lower the volume and/or move the microphone further away from your speakers/headset.</p>
 
-    <!-- <a href="https://github.com/webrtc/samples/tree/gh-pages/src/content/devices/input-output"
-       title="View source for this page on GitHub" id="viewSource">View source on GitHub</a> -->
+    <a href="https://github.com/webrtc/samples/tree/gh-pages/src/content/devices/input-output"
+       title="View source for this page on GitHub" id="viewSource">View source on GitHub</a>
 </div>
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script src="assets/javascript/app.js" async></script>
+<script src="js/main.js" async></script>
 
 <script src="../../../js/lib/ga.js"></script>
 </body>
