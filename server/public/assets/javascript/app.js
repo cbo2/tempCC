@@ -6,9 +6,10 @@ const videoElement = document.querySelector('video');
 const audioInputSelect = document.querySelector('select#audioSource');
 const audioOutputSelect = document.querySelector('select#audioOutput');
 const videoSelect = document.querySelector('select#videoSource');
-const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+// const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+const selectors = [videoSelect];
 
-audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+// audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 let deviceNames = [];
 let preferredDevice = null;
 // let deviceInfos = navigator.mediaDevices.enumerateDevices();
