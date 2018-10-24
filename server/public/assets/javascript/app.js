@@ -70,7 +70,7 @@ navigator.mediaDevices.enumerateDevices().then(devices => {
 }).then(stream => {
     console.log(`*** about to set the stream with: ${constraints.video.deviceId.exact} AND 
     ${JSON.stringify(stream)}`)
-    navigator.mediaDevices.enumerateDevices(constraints).then(stream => {
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
         gotStream(stream)
     }).then(devices => {
         gotDevices(devices)
