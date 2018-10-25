@@ -16,7 +16,7 @@
     "vcap_services": "^0.3.4",
     "watson-developer-cloud": "^3.4.5"
   },
-  "main": "app.js",
+  "web": "app.js",
   "scripts": {  
     "start": "node app.js"
   },
