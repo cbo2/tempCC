@@ -218,7 +218,7 @@ application.post("/hitwatson", function (req, result) {
 
 application.get("/", function (req, response) {
     console.log("==> hit the root route!");
-    respone.sendFile('index.html');
+    response.sendFile('index.html');
 });
 
 // routes.......................end

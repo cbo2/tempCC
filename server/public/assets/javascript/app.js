@@ -1,10 +1,4 @@
-/*
-*  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
-*
-*  Use of this source code is governed by a BSD-style license
-*  that can be found in the LICENSE file in the root of the source
-*  tree.
-*/
+
 
 'use strict';
 
@@ -12,99 +6,142 @@ const videoElement = document.querySelector('video');
 const audioInputSelect = document.querySelector('select#audioSource');
 const audioOutputSelect = document.querySelector('select#audioOutput');
 const videoSelect = document.querySelector('select#videoSource');
-const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+// const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+const selectors = [videoSelect];
 
-audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+// audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+let deviceNames = [];
+let preferredDevice = null;
+// let deviceInfos = navigator.mediaDevices.enumerateDevices();
+
+// gotDevices(deviceInfos);
 
 function gotDevices(deviceInfos) {
-  // Handles being called several times to update labels. Preserve values.
-  const values = selectors.map(select => select.value);
-  selectors.forEach(select => {
-    while (select.firstChild) {
-      select.removeChild(select.firstChild);
+    // Handles being called several times to update labels. Preserve values.
+    const values = selectors.map(select => select.value);
+    selectors.forEach(select => {
+        while (select.firstChild) {
+            select.removeChild(select.firstChild);
+        }
+    });
+    for (let i = 0; i !== deviceInfos.length; ++i) {
+        const deviceInfo = deviceInfos[i];
+        console.log(`"===> the device info is: ${JSON.stringify(deviceInfo)}`)
+        const option = document.createElement('option');
+        option.value = deviceInfo.deviceId;
+        if (deviceInfo.kind === 'videoinput') {
+            option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+            console.log("==> now appending the vidoeselection of: " + deviceInfo.label)
+            videoSelect.appendChild(option);
+            deviceNames.push(deviceInfo.label);
+            if (!preferredDevice) {
+                console.log(`now setting the preffered device to: ${JSON.stringify(deviceInfo)}`)
+                preferredDevice = deviceInfo;  // take a camera of some kind
+            } else {
+                // if (deviceInfo.label === "Back Camera") {
+                if (deviceInfo.label.match('[Bb]ack')) {
+                        console.log(`now setting the preffered device to back camera: ${JSON.stringify(deviceInfo)}`)
+                    preferredDevice = deviceInfo;  // prefer the back camera!
+                }
+            }
+        }
     }
-  });
-  for (let i = 0; i !== deviceInfos.length; ++i) {
-    const deviceInfo = deviceInfos[i];
-    const option = document.createElement('option');
-    option.value = deviceInfo.deviceId;
-    if (deviceInfo.kind === 'audioinput') {
-      option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
-      audioInputSelect.appendChild(option);
-    } else if (deviceInfo.kind === 'audiooutput') {
-      option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
-      audioOutputSelect.appendChild(option);
-    } else if (deviceInfo.kind === 'videoinput') {
-      option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
-      videoSelect.appendChild(option);
-    } else {
-      console.log('Some other kind of source/device: ', deviceInfo);
-    }
-  }
-  selectors.forEach((select, selectorIndex) => {
-    if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
-      select.value = values[selectorIndex];
-    }
-  });
+    document.getElementById("selection-output").innerHTML = "Device names: " + deviceNames;
+    document.getElementById("preferred-camera").innerHTML = "The preferred camera is: " + preferredDevice.label;
+
+    selectors.forEach((select, selectorIndex) => {
+        if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+            select.value = values[selectorIndex];
+        }
+    });
 }
 
-navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+const constraints = {
+    // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+    video: { deviceId: { exact: undefined } }
+};
+// first call it to discover all the devices....
+navigator.mediaDevices.enumerateDevices().then(devices => {
+    gotDevices(devices)
+    constraints.video.deviceId.exact = preferredDevice.deviceId;
+    console.log(`*** the preferred deviceid now set to: ${constraints.video.deviceId.exact}`)
+    return devices;
+}).then(stream => {
+    console.log(`*** about to set the stream with: ${constraints.video.deviceId.exact} AND 
+    ${JSON.stringify(stream)}`)
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        gotStream(stream)
+    }).then(devices => {
+        gotDevices(devices)
+        start()
+    })
+}).catch(handleError);
+// const constraints = {
+//     // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+//     video: { deviceId: { exact: preferredDevice.deviceId } }
+// };
+// then call it to set the preferred device
+// navigator.mediaDevices.enumerateDevices(constraints).then(gotDevices).catch(handleError);
 
 // Attach audio output device to video element using device/sink ID.
 function attachSinkId(element, sinkId) {
-  if (typeof element.sinkId !== 'undefined') {
-    element.setSinkId(sinkId)
-      .then(() => {
-        console.log(`Success, audio output device attached: ${sinkId}`);
-      })
-      .catch(error => {
-        let errorMessage = error;
-        if (error.name === 'SecurityError') {
-          errorMessage = `You need to use HTTPS for selecting audio output device: ${error}`;
-        }
-        console.error(errorMessage);
-        // Jump back to first output device in the list as it's the default.
-        audioOutputSelect.selectedIndex = 0;
-      });
-  } else {
-    console.warn('Browser does not support output device selection.');
-  }
+    if (typeof element.sinkId !== 'undefined') {
+        element.setSinkId(sinkId)
+            .then(() => {
+                console.log(`Success, audio output device attached: ${sinkId}`);
+            })
+            .catch(error => {
+                let errorMessage = error;
+                if (error.name === 'SecurityError') {
+                    errorMessage = `You need to use HTTPS for selecting audio output device: ${error}`;
+                }
+                console.error(errorMessage);
+                // Jump back to first output device in the list as it's the default.
+                audioOutputSelect.selectedIndex = 0;
+            });
+    } else {
+        console.warn('Browser does not support output device selection.');
+    }
 }
 
-function changeAudioDestination() {
-  const audioDestination = audioOutputSelect.value;
-  attachSinkId(videoElement, audioDestination);
-}
+// function changeAudioDestination() {
+//   const audioDestination = audioOutputSelect.value;
+//   attachSinkId(videoElement, audioDestination);
+// }
 
 function gotStream(stream) {
-  window.stream = stream; // make stream available to console
-  videoElement.srcObject = stream;
-  // Refresh button list in case labels have become available
-  return navigator.mediaDevices.enumerateDevices();
+    window.stream = stream; // make stream available to console
+    videoElement.srcObject = stream;
+    // Refresh button list in case labels have become available
+    return navigator.mediaDevices.enumerateDevices();
 }
 
 function handleError(error) {
-  console.log('navigator.getUserMedia error: ', error);
+    console.log('navigator.getUserMedia error: ', error);
 }
 
 function start() {
-  if (window.stream) {
-    window.stream.getTracks().forEach(track => {
-      track.stop();
-    });
-  }
-  const audioSource = audioInputSelect.value;
-  const videoSource = videoSelect.value;
-  const constraints = {
-    audio: {deviceId: audioSource ? {exact: audioSource} : undefined},
-    video: {deviceId: videoSource ? {exact: videoSource} : undefined}
-  };
-  navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
-}
+    if (window.stream) {
+        window.stream.getTracks().forEach(track => {
+            track.stop();
+        });
+    }
+    const videoSource = videoSelect.value;
+    console.log(`the video name is: ${JSON.stringify(videoSelect[2])}`)
+    console.log(`videoselect value is: ${videoSelect.value}`)
+    console.log(`the videoSource is: ${videoSource}`)
+    if (preferredDevice) {
+        console.log(`the preferred Device id is: ${preferredDevice.deviceId}`)
+    }
 
-audioInputSelect.onchange = start;
-audioOutputSelect.onchange = changeAudioDestination;
+
+    // const constraints = {
+    //     // video: { deviceId: videoSource ? { exact: videoSource } : undefined }
+    //     video: { deviceId: { exact: preferredDevice.deviceId } }
+    // };
+    navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
+}
 
 videoSelect.onchange = start;
 
-start();
+// start();

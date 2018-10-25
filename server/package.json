@@ -18,8 +18,8 @@
   },
   "main": "app.js",
   "scripts": {  
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "predeploy": "npm run server",
+    "deploy": "gh-pages -d server",
     "start": "node app.js"
   },
   "license": "Apache-2.0",
