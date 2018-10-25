@@ -2,7 +2,7 @@
 
 'use strict';
 
-const videoElement = document.querySelector('video-stream');
+// const videoElement = document.querySelector('#video-stream');
 
 // audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 let deviceNames = [];
@@ -13,7 +13,8 @@ let preferredDevice = null;
 
 function gotDevices(deviceInfos) {
     // Handles being called several times to update labels. Preserve values.
-    
+    console.log(`"===> the device infoS are: ${JSON.stringify(deviceInfos)}`)
+
     for (let i = 0; i !== deviceInfos.length; ++i) {
         const deviceInfo = deviceInfos[i];
         console.log(`"===> the device info is: ${JSON.stringify(deviceInfo)}`)
@@ -50,14 +51,14 @@ navigator.mediaDevices.enumerateDevices().then(devices => {
     console.log(`*** the preferred deviceid now set to: ${constraints.video.deviceId.exact}`)
     return devices;
 }).then(stream => {
-    console.log(`*** about to set the stream with: ${constraints.video.deviceId.exact} AND 
-    ${JSON.stringify(stream)}`)
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-        gotStream(stream)
-    }).then(devices => {
-        gotDevices(devices)
-        start()
-    })
+    // console.log(`*** about to set the stream with: ${constraints.video.deviceId.exact} AND 
+    // ${JSON.stringify(stream)}`)
+    // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+    //     gotStream(stream)
+    // }).then(devices => {
+    //     gotDevices(devices)
+    //     start()
+    // })
 }).catch(handleError);
 // const constraints = {
 //     // video: {deviceId: videoSource ? {exact: videoSource} : undefined}
@@ -94,7 +95,8 @@ function attachSinkId(element, sinkId) {
 
 function gotStream(stream) {
     window.stream = stream; // make stream available to console
-    videoElement.srcObject = stream;
+    console.log(`=== now setting the window stream to: ${JSON.stringify(stream)}`)
+    video.srcObject = stream;
     // Refresh button list in case labels have become available
     return navigator.mediaDevices.enumerateDevices();
 }
@@ -109,7 +111,7 @@ function start() {
             track.stop();
         });
     }
-    console.log(`the videoSource is: ${videoSource}`)
+    // console.log(`the videoSource is: ${videoSource}`)
     if (preferredDevice) {
         console.log(`the preferred Device id is: ${preferredDevice.deviceId}`)
     }
@@ -143,7 +145,7 @@ function callWatsonBackend(img) {
         });
 }
 
-var video = document.querySelector('#camera-stream'),
+var video = document.querySelector('#video-stream'),
     image = document.querySelector('#snap'),
     start_camera = document.querySelector('#start-camera'),
     controls = document.querySelector('.controls'),
@@ -151,6 +153,20 @@ var video = document.querySelector('#camera-stream'),
     delete_photo_btn = document.querySelector('#delete-photo'),
     download_photo_btn = document.querySelector('#download-photo'),
     error_message = document.querySelector('#error-message');
+
+
+// Mobile browsers cannot play video without user input,
+// so here we're using a button to start it manually.
+start_camera.addEventListener("click", function (e) {
+
+    e.preventDefault();
+
+    start();
+    // Start video playback manually.
+    video.play();
+    showVideo();
+
+});
 
 
 take_photo_btn.addEventListener("click", function (e) {
@@ -177,3 +193,58 @@ take_photo_btn.addEventListener("click", function (e) {
     video.pause();
 
 });
+
+function takeSnapshot() {
+    // Here we're using a trick that involves a hidden canvas element.  
+
+    var hidden_canvas = document.querySelector('canvas'),
+        context = hidden_canvas.getContext('2d');
+
+    // var width = video.videoWidth = 640,
+    //     height = video.videoHeight = 480;
+        var width = 640,
+        height = 480;
+
+    if (width && height) {
+
+        // Setup a canvas with the same dimensions as the video.
+        hidden_canvas.width = width;
+        hidden_canvas.height = height;
+
+        // Make a copy of the current frame in the video on the canvas.
+        context.drawImage(video, 0, 0, width, height);
+
+        // Turn the canvas image into a dataURL that can be used as a src for our photo.
+        return hidden_canvas.toDataURL('image/jpeg', 1.0);
+    }
+}
+
+function displayErrorMessage(error_msg, error) {
+    error = error || "";
+    if (error) {
+        console.log(error);
+    }
+
+    error_message.innerText = error_msg;
+
+    hideUI();
+    error_message.classList.add("visible");
+}
+
+function showVideo() {
+    // Display the video stream and the controls.
+
+    hideUI();
+    video.classList.add("visible");
+    controls.classList.add("visible");
+}
+
+function hideUI() {
+    // Helper function for clearing the app UI.
+
+    controls.classList.remove("visible");
+    start_camera.classList.remove("visible");
+    video.classList.remove("visible");
+    snap.classList.remove("visible");
+    error_message.classList.remove("visible");
+}
