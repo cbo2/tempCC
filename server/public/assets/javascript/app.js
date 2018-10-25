@@ -219,7 +219,6 @@ function takeSnapshot() {
     }
 }
 
-
 function displayErrorMessage(error_msg, error) {
     error = error || "";
     if (error) {
