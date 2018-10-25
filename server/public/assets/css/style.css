@@ -1,160 +1,124 @@
+/* Adds background image */
 body {
-    margin:0px;
-    padding: 0px;
-    background: #000;
+    background: #000000 url("../images/country-quilt-dark.png") repeat right top;
 }
 
-#vid_container {
-    position: fixed;
-    top: 0; left: 0;
-}      
-
-#video{
-    width: 100%; 
-    height: 100%;
-    object-fit: cover; 
-    z-index: 0; 
-} 
-
-#gui_controls {
-    position: fixed;
-    background-color: #111; /*rgba(255, 0, 0, 0.5);*/
-    z-index: 2;
-    bottom:0;
-}      
-
-#video_overlay {
-    position: fixed; 
-    display: none; 
-    width: 100%; 
-    height: 100%; 
-    top: 0; 
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    z-index: 10;
-    background-color:#111;
+/* White text color for all text not in a modal */
+div {
+    color: #ffffff;
 }
 
-/*  Button style from: 
-    https://googlesamples.github.io/web-fundamentals/fundamentals/media/mobile-web-video-playback.html */
-
-button {
-    outline: none;
-    position: absolute;
-    color: white;
+/* Force hr to be white */
+hr {
     display: block;
-    opacity: 1;
-    background: transparent;
-    border: solid 2px #fff;
-    padding: 0;
-    text-shadow: 0px 0px 4px black;
-    background-position: center center;
-    background-repeat: no-repeat;
-    pointer-events: auto;
-    z-index: 2;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0; 
 }
 
-#takePhotoButton {
-    left: calc(50% - 40px);
-    top: calc(50% - 40px);
-    width: 80px;
+/* Black text color for all text in a modal */
+.modal-text-color {
+    color: #000000;
+}
+
+/* Forcing "Begin Survey" button down to be horizontally aligned */
+#modalIntializeButton {
+    margin-top: 250px;
+}
+
+/* Settings for all four rating buttons */
+.ratingButtons {
     height: 80px;
-    background-image: url('img/ic_photo_camera_white_48px.svg');
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
+    width: 70px;
+    margin: 5px 1px 5px 0px;
 }
 
-#takePhotoButton:active {
-    background-color: #fff;
+/* Set width of movie posters */
+#movie-poster {
+    width: 350px
 }
 
-#toggleFullScreenButton {
+/* Rating Button 1 Background Image */
+#ratingButton1 {
+    background-image: url("..//images/fist5-1.png");
+}
+
+/* Rating Button 2 Background Image */
+#ratingButton2 {
+    background-image: url("..//images/fist5-2.png");
+}
+
+/* Rating Button 3 Background Image */
+#ratingButton3 {
+    background-image: url("..//images/fist5-3.png");
+}
+
+/* Rating Button 4 Background Image */
+#ratingButton4 {
+    background-image: url("..//images/fist5-4.png");
+}
+
+/* Rating Button 5 Background Image */
+#ratingButton5 {
+    background-image: url("..//images/fist5-5.png");
+}
+
+
+.app canvas{
     display: none;
-    width: 64px;
-    height: 64px;
-    background-image: url('img/ic_fullscreen_white_48px.svg');
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
-#toggleFullScreenButton[aria-pressed="true"] {
-    background-image: url('img/ic_fullscreen_exit_white_48px.svg');
+
+
+.app video#camera-stream.visible,
+.app img#snap.visible,
+.app #error-message.visible
+{
+    display: block;
 }
 
-#switchCameraButton {
-    display: none;
-    width: 64px;
-    height: 64px;
-    background-image: url('img/ic_camera_rear_white_36px.svg');
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
+.app .controls.visible{
+    display: flex;
 }
 
-#switchCameraButton[aria-pressed="true"] {
-    background-image: url('img/ic_camera_front_white_36px.svg');
-}
 
-@media screen and (orientation:portrait) {
-    /* portrait-specific styles */
 
-    /* video_container (video) doesn't respect height... 
-       so we will fill it in completely in portrait mode
-    */
-    #vid_container {
-        width:100%;
-        /*max-height:80%;*/
-    }  
-
-    #gui_controls {
-        width: 100%;
-        height: 20%;
-        left:0;
+@media(max-width: 1000px){
+    .container{
+        margin: 40px;
     }
 
-    #switchCameraButton { 
-        left: calc(20% - 32px);
-        top: calc(50% - 32px);
+    .app #start-camera.visible{
+        display: block;
     }
 
-    #toggleFullScreenButton { 
-        left: calc(80% - 32px);
-        top: calc(50% - 32px);
+    .app .controls a i{
+        font-size: 16px;
+    }
+
+    .app .controls #take-photo i{
+        font-size: 24px;
     }
 }
 
-@media screen and (orientation:landscape) {
 
-    #vid_container {
-        width:80%;
-        height:100%;
-    }  
-
-    #vid_container.left {
-        left:20%;
+@media(max-width: 600px){
+    .container{
+        margin: 10px;
     }
 
-    /* we default to right */
-    #gui_controls {
-        width: 20%; 
-        height:100%;
-        right:0;
-    }  
-
-    /* for the lefties */
-    #gui_controls.left {
-        left:0;
+    .app #error-message{
+        padding: 80px 50px;
+        font-size: 18px;
     }
 
-    #switchCameraButton { 
-        left: calc(50% - 32px);
-        top: calc(18% - 32px);
+    .app .controls a i{
+        font-size: 12px;
     }
 
-    #toggleFullScreenButton {
-        left: calc(50% - 32px);
-        top: calc(82% - 32px);
+    .app .controls #take-photo i{
+        font-size: 18px;
     }
-
-} 
+}

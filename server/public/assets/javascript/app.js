@@ -39,8 +39,8 @@ function gotDevices(deviceInfos) {
                 preferredDevice = deviceInfo;  // take a camera of some kind
             } else {
                 // if (deviceInfo.label === "Back Camera") {
-                if (deviceInfo.label.match('[Bb]ack')) {
-                        console.log(`now setting the preffered device to back camera: ${JSON.stringify(deviceInfo)}`)
+                if (deviceInfo.label.match('[Bb]ack')) {     // regex to match for back/Back camera
+                    console.log(`now setting the preffered device to back camera: ${JSON.stringify(deviceInfo)}`)
                     preferredDevice = deviceInfo;  // prefer the back camera!
                 }
             }
@@ -145,3 +145,56 @@ function start() {
 videoSelect.onchange = start;
 
 // start();
+
+// Function to send picture to Face++ and retrieve back data on the picture of the person
+function callWatsonBackend(img) {
+    var API_URL = "http://localhost:3000/";
+    // var API_KEY = "paQtvvWUvJ3j0I_ISUA3_eCHhId9iZFl";
+    // var API_SECRET = "3lS34CClXxNX3LnlLfaK9Q4uP8lwiTZX";
+    // var face_attributes = "gender,age,smiling,eyestatus,emotion,ethnicity";
+
+    console.log("about to make a POST requet to the backend");
+
+    $("#movie-info").empty();
+    $.post('/hitwatson', { image: img })
+        .then(function (res) {
+            console.log("==> the response: " + JSON.stringify(res));
+            $("#movie-info").append("This is what we got: ");
+            $("#movie-info").append(JSON.stringify(res));
+        });
+}
+
+var video = document.querySelector('#camera-stream'),
+    image = document.querySelector('#snap'),
+    start_camera = document.querySelector('#start-camera'),
+    controls = document.querySelector('.controls'),
+    take_photo_btn = document.querySelector('#take-photo'),
+    delete_photo_btn = document.querySelector('#delete-photo'),
+    download_photo_btn = document.querySelector('#download-photo'),
+    error_message = document.querySelector('#error-message');
+
+
+take_photo_btn.addEventListener("click", function (e) {
+
+    e.preventDefault();
+
+    var snap = takeSnapshot();
+
+
+    // Show image. 
+    image.setAttribute('src', snap);
+    image.classList.add("visible");
+
+    callWatsonBackend(image.src);
+
+    // Enable delete and save buttons
+    delete_photo_btn.classList.remove("disabled");
+    download_photo_btn.classList.remove("disabled");
+
+    // Set the href attribute of the download button to the snap url.
+    download_photo_btn.href = snap;
+
+    // Pause video playback of stream.
+    video.pause();
+
+});

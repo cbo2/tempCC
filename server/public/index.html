@@ -1,73 +1,106 @@
 <!DOCTYPE html>
-
 <html>
+
 <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Group Project Kiosk by Don, Josh, and Craig (DJC)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta charset="utf-8">
-    <meta name="description" content="WebRTC code samples">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
-    <meta itemprop="description" content="Client-side WebRTC code samples">
-    <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
-    <meta itemprop="name" content="WebRTC code samples">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta id="theme-color" name="theme-color" content="#ffffff">
+    <!-- Adds link to Bootstrap & style.css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
 
-    <base target="_blank">
+    <!-- Adds link to JQuery & app.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
+    <!-- <script src = "/path/to/clientside-require.js"></script> -->
 
-    <title>Select audio and video sources</title>
+    <script src="https://unpkg.com/blob-util/dist/blob-util.min.js"></script>
 
-    <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../../../css/main.css">
-
-    <style>
-        div.select {
-            display: inline-block;
-            margin: 0 0 1em 0;
-        }
-        p.small {
-            font-size: 0.7em;
-        }
-        label {
-            width: 12em;
-            display: inline-block;
-        }
-    </style>
-
+    <!-- Adds favicon -->
+    <link rel="icon" href="assets/images/movieReelFavicon.png" type="image/gif" sizes="16x16">
 </head>
 
 <body>
-<div id="container">
-
-    <!-- <h1><a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a><span>Select sources &amp; outputs</span>
-    </h1>
-
-    <p>Get available audio, video sources and audio output devices from <code>mediaDevices.enumerateDevices()</code>
-        then set the source for <code>getUserMedia()</code> using a <code>deviceId</code> constraint.</p>
-
-    <div class="select">
-        <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
+    <!-- Bootsrap Grid format to store movie data and rating buttons -->
+    <div class="container.fluid">
+        <div class="row no-gutters">
+            <div class="col-md-8">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-md-6">
+                        <div class="row no-gutters align-items-center justify-content-center" id="movie-posters">
+                        </div>
+                        <div class="row no-gutters align-items-center justify-content-center" id="movie-rating">
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="movie-info">
+                    </div>
+                </div>
+                <div class="row no-gutters align-items-center justify-content-center" id="end-div">
+                </div>
+                <div class="row no-gutters align-items-center justify-content-center" id="end-button-div">
+                </div>
+            </div>
+            <div class="col-md-4" id="rating-history" style="display: none">
+                <h3>Rating History:</h3>
+                <hr>
+            </div>
+        </div>
     </div>
 
-    <div class="select">
-        <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
-    </div> -->
-
-    <div class="select">
-        <label for="videoSource">Video source: </label><select id="videoSource"></select>
+    <!-- Begin Survey Button trigger modal -->
+    <div class="row justify-content-center">
+        <button type="button" class="btn-lg btn-primary" id="start-camera" data-toggle="modal" data-target="#startSurveyModal">
+            Begin Survey
+        </button>
     </div>
 
-    <div id="selection-output"></div>
-    <div id="preferred-camera"></div>
-    
-    <video id="video" playsinline autoplay></video>
+    <!-- Begin Survey Modal -->
+    <div class="modal fade" id="startSurveyModal" tabindex="-1" role="dialog" aria-labelledby="startSurveyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title modal-text-color" id="startSurveyModalLabel">Tap the picture of your food item!</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to collect zipcode and photo -->
+                    <form>
+                        <br>
+                        <!-- HTML for live videa camera stream -->
 
-    <!-- <p class="small"><b>Note:</b> If you hear a reverb sound your microphone is picking up the output of your
-        speakers/headset, lower the volume and/or move the microphone further away from your speakers/headset.</p>
+                        <video id="camera-stream"></video>
+                        <img id="snap">
+                    
+                        <p id="error-message"></p>
+                    
+                        <div class="controls">
+                          <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
+                          <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+                          <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>  
+                        </div>
+                    
+                        <!-- Hidden canvas element. Used for taking snapshot of video. -->
+                        <canvas></canvas>
 
-    <a href="https://github.com/webrtc/samples/tree/gh-pages/src/content/devices/input-output"
-       title="View source for this page on GitHub" id="viewSource">View source on GitHub</a> -->
-</div>
+
+
+
+
+
+                        <div>
+                            <!-- <video id="screenshot-video" class="videostream img-fluid" autoplay="true" preload="auto" muted="true" playsinline="true"></video> -->
+                            <!-- <img id="screenshot-img" src=""> -->
+                            <div id="food-item"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script src="assets/javascript/app.js" async></script>
