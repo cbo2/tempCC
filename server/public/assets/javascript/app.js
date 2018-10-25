@@ -197,6 +197,9 @@ take_photo_btn.addEventListener("click", function (e) {
 function takeSnapshot() {
     // Here we're using a trick that involves a hidden canvas element.  
 
+    $("#startSurveyModal").modal("hide")
+    $("#start-camera").remove();
+
     var hidden_canvas = document.querySelector('canvas'),
         context = hidden_canvas.getContext('2d');
 
