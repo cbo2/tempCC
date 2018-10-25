@@ -48,7 +48,7 @@ const s3config = {
     ACL: 'public-read',
     ContentType: 'image/jpg'
 }
-
+ 
 
 const uuid = require('uuid');
 
