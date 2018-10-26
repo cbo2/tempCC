@@ -165,8 +165,8 @@ application.post("/hitwatson", function (req, result) {
     
 
 
-    // var temp = path.join(__dirname + "/pics", uuid.v1() + '.' + resource.type);
-    var temp = path.join(__dirname + "/pics", 'tempfile' + '.' + resource.type);
+    var temp = path.join(__dirname + "/pics", uuid.v1() + '.' + resource.type);
+    // var temp = path.join(__dirname + "/pics", 'tempfile' + '.' + resource.type);
     console.log("temp file is: " + temp)
     fs.writeFileSync(temp, resource.data, { mode: '664' });
 
