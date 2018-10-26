@@ -168,7 +168,7 @@ start_camera.addEventListener("click", function (e) {
 
 });
 
-$("#modal-body").style.visibility="hidden";
+// $("#modal-body").style.visibility="hidden";
 
 video.addEventListener("click", function (e) {
 
