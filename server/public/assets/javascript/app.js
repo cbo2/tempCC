@@ -205,8 +205,8 @@ function takeSnapshot() {
 
     // var width = video.videoWidth = 640,
     //     height = video.videoHeight = 480;
-        var width = 640,
-        height = 480;
+        var width = 300,
+        height = 200;
 
     if (width && height) {
 
