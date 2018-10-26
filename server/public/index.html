@@ -60,51 +60,56 @@
     </div>
 
     <!-- Begin Survey Modal -->
-    <div class="modal fade" id="startSurveyModal" tabindex="-1" role="dialog" aria-labelledby="startSurveyModalLabel" aria-hidden="true">
+    <div class="modal fade" id="startSurveyModal" tabindex="-1" role="dialog" aria-labelledby="startSurveyModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title modal-text-color" id="startSurveyModalLabel">Tap the picture of your food item!</h5>
-                </div>
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title modal-text-color" id="startSurveyModalLabel">Tap the picture of your food
+                        item!</h5>
+                </div> -->
                 <div class="modal-body">
                     <!-- Form to collect zipcode and photo -->
-                    <form>
-                        <br>
-                        <!-- HTML for live videa camera stream -->
+                    <!-- <form> -->
+                        <!-- <br> -->
+                        <div class="wrapper">
+                            <!-- HTML for live videa camera stream -->
 
-                        <video id="video-stream" playsinline autoplay></video>
-                        <img id="snap">
-                    
-                        <p id="error-message"></p>
-                    
-                        <div class="controls">
-                          <!-- <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a> -->
-                          <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">snap pic</i></a>
-                          <!-- <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>   -->
+                            <video id="video-stream" class="videoInsert" playsinline autoplay></video>
+                            <img id="snap">
                         </div>
-                    
+
+                        <!-- <p id="error-message"></p> -->
+
+                        <!-- <div class="controls"> -->
+                            <!-- <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a> -->
+                            <!-- <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">snap pic</i></a> -->
+                            <!-- <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>   -->
+                        <!-- </div> -->
+
                         <!-- Hidden canvas element. Used for taking snapshot of video. -->
-                        <canvas></canvas>
+                        <canvas id="canvas-stream"></canvas>
 
 
 
 
 
 
-                        <div>
+                        <!-- <div> -->
                             <!-- <video id="screenshot-video" class="videostream img-fluid" autoplay="true" preload="auto" muted="true" playsinline="true"></video> -->
                             <!-- <img id="screenshot-img" src=""> -->
-                            <div id="food-item"></div>
-                        </div>
-                    </form>
+                            <!-- <div id="food-item"></div> -->
+                        <!-- </div> -->
+                    <!-- </form> -->
                 </div>
             </div>
         </div>
     </div>
 
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script src="assets/javascript/app.js" async></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="assets/javascript/app.js" async></script>
 
-<script src="../../../js/lib/ga.js"></script>
+    <script src="../../../js/lib/ga.js"></script>
 </body>
+
 </html>

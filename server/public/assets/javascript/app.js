@@ -168,8 +168,9 @@ start_camera.addEventListener("click", function (e) {
 
 });
 
+$("#modal-body").style.visibility="hidden";
 
-take_photo_btn.addEventListener("click", function (e) {
+video.addEventListener("click", function (e) {
 
     e.preventDefault();
 
@@ -199,6 +200,7 @@ function takeSnapshot() {
 
     $("#startSurveyModal").modal("hide")
     $("#start-camera").remove();
+
 
     var hidden_canvas = document.querySelector('canvas'),
         context = hidden_canvas.getContext('2d');
